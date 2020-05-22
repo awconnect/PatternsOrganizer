@@ -11,13 +11,24 @@ export default class FormDataComponent extends Component {
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePhone = this.onChangePhone.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
-
-        this.state = {
-            name: '',
-            email: '',
-            phone: '',
-            number: 0
+        
+        if (JSON.parse(localStorage.getItem('default'))){
+            this.userData = JSON.parse(localStorage.getItem('default'));
+            this.state = {
+                name: '',
+                email: '',
+                phone: '',
+                number: this.userData.number,
+            }
+        } else {
+            this.state = {
+                name: '',
+                email: '',
+                phone: '',
+                number: 0
+            }
         }
+
     }
 
     // Form Events

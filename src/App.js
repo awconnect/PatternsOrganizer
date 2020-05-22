@@ -12,15 +12,36 @@ import {
 } from "react-router-dom";
 
 
-class App extends React.Component {
+export default class App extends React.Component {
   render() {
     return (
-      <div className="App">
-        <h3>Pattern Manager </h3>
-         <FormDataComponent />
-      </div>
-    );
+      <Router>
+        <div>
+          <ul>
+            <li>
+              <Link to="/task">Task</Link>
+            </li>
+            <li>
+              <Link to="/"> Home </Link>
+            </li>
+          </ul>
+
+          <Switch>
+
+            <Route exact path ="/">
+              <div>
+                <h3> Hi. </h3>
+              </div>
+            </Route>
+            <Route exact path ="/task">
+              <FormDataComponent />
+            </Route>
+
+          </Switch>
+        </div>
+      </Router>
+  );
   }
 }
 
-export default App;
+
