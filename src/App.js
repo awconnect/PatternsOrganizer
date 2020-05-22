@@ -4,6 +4,7 @@ import './App.css';
 import { Form, Button } from 'semantic-ui-react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FormDataComponent from './form-data-component';
+import TaskManager from "./TaskManager"
 import {
   BrowserRouter as Router,
   Switch,
@@ -30,11 +31,16 @@ export default class App extends React.Component {
 
             <Route exact path ="/">
               <div>
-                <h3> Hi. </h3>
+                <TaskManager />
               </div>
             </Route>
+
             <Route exact path ="/task">
               <FormDataComponent />
+            </Route>
+
+            <Route exact path ="/taskmanager">
+              <TaskManager />
             </Route>
 
           </Switch>

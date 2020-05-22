@@ -10,7 +10,9 @@ export default class FormDataComponent extends Component {
         this.onChangeName = this.onChangeName.bind(this);
         this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangePhone = this.onChangePhone.bind(this);
+        this.onChangeDueDate = this.onChangeDueDate.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+
         
         if (JSON.parse(localStorage.getItem('default'))){
             this.userData = JSON.parse(localStorage.getItem('default'));
@@ -18,6 +20,7 @@ export default class FormDataComponent extends Component {
                 name: '',
                 email: '',
                 phone: '',
+                dueDate: '',
                 number: this.userData.number,
             }
         } else {
@@ -25,6 +28,7 @@ export default class FormDataComponent extends Component {
                 name: '',
                 email: '',
                 phone: '',
+                dueDate: '',
                 number: 0
             }
         }
@@ -44,6 +48,10 @@ export default class FormDataComponent extends Component {
         this.setState({ phone: e.target.value })
     }
 
+    onChangeDueDate(e) {
+        this.setState({ dueDate: e.target.value })
+    }
+
     onSubmit(e) {
         e.preventDefault()
 
@@ -51,19 +59,21 @@ export default class FormDataComponent extends Component {
             number: this.state.number + 1
         })
 
-        const person = {
+        const taskItem = {
             name: this.state.name,
             email: this.state.email,
-            phone: this.state.phone
+            phone: this.state.phone,
+            dueDate: this.state.dueDate
         }
 
-        localStorage.setItem('user' + this.state.number , JSON.stringify(person));
+        localStorage.setItem('user' + this.state.number , JSON.stringify(taskItem));
 
 
         this.setState({
             name: '',
             email: '',
             phone: '',
+            dueDate: ''
         })
     }
 
@@ -75,13 +85,15 @@ export default class FormDataComponent extends Component {
             this.setState({
                 name: this.userData.name,
                 email: this.userData.email,
-                phone: this.userData.phone
+                phone: this.userData.phone,
+                dueDate: this.userData.dueDate
             })
         } else {
             this.setState({
                 name: '',
                 email: '',
-                phone: ''
+                phone: '',
+                dueDate: ''
             })
         }
     }
@@ -102,6 +114,10 @@ export default class FormDataComponent extends Component {
                     <div className="form-group">
                         <label>Email</label>
                         <input type="email" className="form-control" value={this.state.email} onChange={this.onChangeEmail} />
+                    </div>
+                    <div className="form-group">
+                        <label>Due Time</label>
+                        <input type="datetime-local" className="form-control" value={this.state.dueDate} onChange={this.onChangeDueDate} />
                     </div>
                     <div className="form-group">
                         <label>Phone</label>
