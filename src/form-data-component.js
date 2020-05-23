@@ -1,4 +1,12 @@
 import React, { Component } from 'react';
+import 'rc-slider/assets/index.css';
+import 'rc-tooltip/assets/bootstrap.css';
+import Tooltip from 'rc-tooltip';
+import Slider from 'rc-slider';
+
+const createSliderWithTooltip = Slider.createSliderWithTooltip;
+const Range = createSliderWithTooltip(Slider.Range);
+const Handle = Slider.Handle;
 
 export default class FormDataComponent extends Component {
 
@@ -14,6 +22,7 @@ export default class FormDataComponent extends Component {
         this.onChangeDescription = this.onChangeDescription.bind(this);
         this.onChangeExpHours = this.onChangeExpHours.bind(this);
         this.onChangeExpMins = this.onChangeExpMins.bind(this);
+        this.onChangePriority = this.onChangePriority.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
 
         this.state = {
@@ -24,6 +33,7 @@ export default class FormDataComponent extends Component {
             description: '',
             expHours: '',
             expMins: '',
+            priority: ''
         }
         
         if (JSON.parse(localStorage.getItem('default'))){
@@ -68,6 +78,10 @@ export default class FormDataComponent extends Component {
         this.setState({ expMins: e.target.value })
     }
 
+    onChangePriority(e) {
+        this.setState({ priority: e })
+    }
+
     onSubmit(e) {
         e.preventDefault()
 
@@ -79,6 +93,7 @@ export default class FormDataComponent extends Component {
             name: this.state.name,
             email: this.state.email,
             dueDate: this.state.dueDate,
+            priority: this.state.priority,
             completed: this.state.completed,
             description: this.state.description,
             expHours: this.state.expHours,
@@ -92,6 +107,7 @@ export default class FormDataComponent extends Component {
             name: '',
             email: '',
             dueDate: '',
+            priority: '',
             completed: false,
             description: '',
             expHours: '',
@@ -108,6 +124,7 @@ export default class FormDataComponent extends Component {
                 name: this.userData.name,
                 email: this.userData.email,
                 dueDate: this.userData.dueDate,
+                priority: this.userData.priority,
                 completed: this.userData.completed,
                 description: this.userData.description,
                 expHours: this.userData.expHours,
@@ -118,6 +135,7 @@ export default class FormDataComponent extends Component {
                 name: '',
                 email: '',
                 dueDate: '',
+                priority: '',
                 completed: false,
                 description: '',
                 expHours: '',
@@ -127,7 +145,7 @@ export default class FormDataComponent extends Component {
 
     }
 
-    UNSAFE_componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) { //FIXME: AMEND USAGE TO NON-DEPRECATED LIFECYCLE METHOD
         localStorage.setItem('default', JSON.stringify(nextState));
     }
 
@@ -136,6 +154,10 @@ export default class FormDataComponent extends Component {
         return (
             <div className="container">
                 <form onSubmit={this.onSubmit}>
+                    <div className="form-group" style={wrapperStyle}>
+                        <p>Priority Slider (3 = Greatest Priority)</p>
+                        <Slider min={1} max={3} defaultValue={1} handle={handle} marks={marks} value={this.state.priority || 1} onChange={this.onChangePriority}/>
+                    </div>
                     <div className="form-group">
                         <label>Name</label>
                         <input type="text" className="form-control" value={this.state.name || ''} onChange={this.onChangeName} />
@@ -168,7 +190,6 @@ export default class FormDataComponent extends Component {
                             </div>
                         </div>
                     </div>
-
                     <br />
                     <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 </form>
@@ -176,3 +197,25 @@ export default class FormDataComponent extends Component {
         )
     }
 }
+
+const wrapperStyle = { width: 400, margin: 50 };
+const marks = {
+    1: <strong>1</strong>,
+    2: <strong>2</strong>,
+    3: <strong>3</strong>,
+};
+
+const handle = (props) => {
+  const { value, dragging, index, ...restProps } = props;
+  return (
+    <Tooltip
+      prefixCls="rc-slider-tooltip"
+      overlay={value}
+      visible={dragging}
+      placement="top"
+      key={index}
+    >
+      <Handle value={value} {...restProps} />
+    </Tooltip>
+  );
+};
