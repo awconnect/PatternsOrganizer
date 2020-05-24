@@ -16,7 +16,6 @@ export default class FormDataComponent extends Component {
         super(props);
 
         this.onChangeName = this.onChangeName.bind(this);
-        this.onChangeEmail = this.onChangeEmail.bind(this);
         this.onChangeDueDate = this.onChangeDueDate.bind(this);
         this.onChangeCompleted = this.onChangeCompleted.bind(this);
         this.onChangeDescription = this.onChangeDescription.bind(this);
@@ -27,7 +26,6 @@ export default class FormDataComponent extends Component {
 
         this.state = {
             name: '',
-            email: '',
             dueDate: '',
             completed: false,
             description: '',
@@ -52,10 +50,6 @@ export default class FormDataComponent extends Component {
     // Form Events
     onChangeName(e) {
         this.setState({ name: e.target.value })
-    }
-
-    onChangeEmail(e) {
-        this.setState({ email: e.target.value })
     }
 
     onChangeDueDate(e) {
@@ -91,7 +85,6 @@ export default class FormDataComponent extends Component {
 
         const taskItem = {
             name: this.state.name,
-            email: this.state.email,
             dueDate: this.state.dueDate,
             priority: this.state.priority,
             completed: this.state.completed,
@@ -105,7 +98,6 @@ export default class FormDataComponent extends Component {
 
         this.setState({
             name: '',
-            email: '',
             dueDate: '',
             priority: '',
             completed: false,
@@ -122,7 +114,6 @@ export default class FormDataComponent extends Component {
         if (localStorage.getItem('default')) {
             this.setState({
                 name: this.userData.name,
-                email: this.userData.email,
                 dueDate: this.userData.dueDate,
                 priority: this.userData.priority,
                 completed: this.userData.completed,
@@ -133,7 +124,6 @@ export default class FormDataComponent extends Component {
         } else {
             this.setState({
                 name: '',
-                email: '',
                 dueDate: '',
                 priority: '',
                 completed: false,
@@ -154,31 +144,16 @@ export default class FormDataComponent extends Component {
         return (
             <div className="container">
                 <form onSubmit={this.onSubmit}>
-                    <div className="form-group" style={wrapperStyle}>
-                        <p>Priority Slider (3 = Greatest Priority)</p>
-                        <Slider min={1} max={3} defaultValue={1} handle={handle} marks={marks} value={this.state.priority || 1} onChange={this.onChangePriority}/>
-                    </div>
                     <div className="form-group">
-                        <label>Name</label>
+                        <label>Task</label>
                         <input type="text" className="form-control" value={this.state.name || ''} onChange={this.onChangeName} />
-                    </div>
-                    <div className="form-group">
-                        <label>Email</label>
-                        <input type="email" className="form-control" value={this.state.email || ''} onChange={this.onChangeEmail} />
-                    </div>
-                    <div className="form-group">
-                        <label>Due Time</label>
-                        <input type="datetime-local" className="form-control" value={this.state.dueDate || ''} onChange={this.onChangeDueDate} />
-                    </div>
-                    <div className="form-group">
-                        <label>Completed?</label>
-                        <input type="checkbox" id="iscompleted" className="form-control" name="box1" checked={this.state.completed||false} onChange={this.onChangeCompleted}/>
                     </div>
                     <div className="form-group"> 
                         <label> Description </label>
                         <textarea id="txtArea" className="form-control" rows="10" cols="70" name="txtbox" value={this.state.description || ''} onChange={this.onChangeDescription}/>
                     </div>
-                    <div className="container-fluid"> 
+                    <div className="form-group"> 
+                        <label> Expected Time to be taken (hours and minutes): </label>
                         <div class="row">
                             <div class="col-lg-6">
                                 <label>Hours</label>
@@ -190,6 +165,18 @@ export default class FormDataComponent extends Component {
                             </div>
                         </div>
                     </div>
+                    <div className="form-group">
+                        <label>Due Date</label>
+                        <input type="datetime-local" className="form-control" value={this.state.dueDate || ''} onChange={this.onChangeDueDate} />
+                    </div>
+                    <div className="form-group" style={wrapperStyle}>
+                        <p>Priority Slider (3 = Greatest Priority)</p>
+                        <Slider min={1} max={3} defaultValue={1} handle={handle} marks={marks} value={this.state.priority || 1} onChange={this.onChangePriority}/>
+                    </div>
+                    <div className="form-group">
+                        <label>Completed?</label>
+                        <input type="checkbox" id="iscompleted" className="form-control" name="box1" checked={this.state.completed||false} onChange={this.onChangeCompleted}/>
+                    </div>
                     <br />
                     <button type="submit" className="btn btn-primary btn-block">Submit</button>
                 </form>
@@ -197,6 +184,7 @@ export default class FormDataComponent extends Component {
         )
     }
 }
+
 
 const wrapperStyle = { width: 400, margin: 50 };
 const marks = {
